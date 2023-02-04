@@ -11,8 +11,8 @@ public class CPFTests
     public void CreateCPF_ValidValue_ReturnsCPFWithIsValidAsTrue(string cpf)
     {
         var actual = new CPF(cpf);
-        Assert.AreEqual(CPFUtils.RemoveMask(cpf), actual.Value);
-        Assert.True(actual.IsValid);
+        Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
+        Assert.That(actual.IsValid, Is.True);
     }
 
     [TestCase("")]
@@ -23,7 +23,7 @@ public class CPFTests
     public void CreateCPF_InvalidValue_ReturnsCPFWithIsValidAsFalse(string cpf)
     {
         var actual = new CPF(cpf);
-        Assert.AreEqual(CPFUtils.RemoveMask(cpf), actual.Value);
-        Assert.False(actual.IsValid);
+        Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
+        Assert.That(actual.IsValid, Is.False);
     }
 }
