@@ -26,7 +26,7 @@ public class OrderTests
         PopulateOrderWithDefaultProducts(order);
 
         var actual = order.CalculatePrice();
-        Assert.That(actual, Is.EqualTo(7.405M));
+        Assert.That(actual, Is.EqualTo(66.645M));
     }
 
     [Test]

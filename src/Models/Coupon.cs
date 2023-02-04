@@ -16,6 +16,6 @@ public class Coupon
 
     public decimal ApplyDiscountTo(decimal value)
     {
-        return value * (decimal)PercentDiscount;
+        return value - (value * (decimal)PercentDiscount);
     }
 }

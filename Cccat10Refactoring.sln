@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cccat10RefactoringCode", "src\Cccat10RefactoringCode.csproj", "{31400807-B6F7-4EC5-A991-DFB3C09C5D8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cccat10RefactoringTests", "Tests\Cccat10RefactoringTests.csproj", "{32FC982D-0D94-4740-BC74-78C02E869559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cccat10RefactoringTests", "Tests\Cccat10RefactoringTests.csproj", "{648A8271-37F1-4DB3-917E-7BAC4F80C362}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +20,9 @@ Global
 		{31400807-B6F7-4EC5-A991-DFB3C09C5D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31400807-B6F7-4EC5-A991-DFB3C09C5D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31400807-B6F7-4EC5-A991-DFB3C09C5D8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32FC982D-0D94-4740-BC74-78C02E869559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32FC982D-0D94-4740-BC74-78C02E869559}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32FC982D-0D94-4740-BC74-78C02E869559}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32FC982D-0D94-4740-BC74-78C02E869559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648A8271-37F1-4DB3-917E-7BAC4F80C362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648A8271-37F1-4DB3-917E-7BAC4F80C362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648A8271-37F1-4DB3-917E-7BAC4F80C362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648A8271-37F1-4DB3-917E-7BAC4F80C362}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
