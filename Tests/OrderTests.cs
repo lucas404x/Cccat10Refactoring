@@ -22,7 +22,7 @@ public class OrderTests
     [Test]
     public void CalculatePrice_ValidArgsAndWithCoupon_ReturnsTotalPriceWithDiscount()
     {
-        var order = new Order(VALID_CPF, new Coupon(0.1f));
+        var order = new Order(VALID_CPF, new Coupon(10));
         PopulateOrderWithDefaultProducts(order);
 
         var actual = order.CalculatePrice();
@@ -32,7 +32,7 @@ public class OrderTests
     [Test]
     public void CreateOrder_InvalidCoupon_ThrowsException() 
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => new Order(VALID_CPF, new Coupon(1.1f)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Order(VALID_CPF, new Coupon(110)));
     }
 
     [Test]
