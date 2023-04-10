@@ -12,7 +12,7 @@ public class CPFTests
     {
         var actual = new CPF(cpf);
         Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
-        Assert.That(actual.IsValid, Is.True);
+        Assert.That(actual.IsValid(), Is.True);
     }
 
     [TestCase("")]
@@ -24,6 +24,6 @@ public class CPFTests
     {
         var actual = new CPF(cpf);
         Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
-        Assert.That(actual.IsValid, Is.False);
+        Assert.That(actual.IsValid(), Is.False);
     }
 }
