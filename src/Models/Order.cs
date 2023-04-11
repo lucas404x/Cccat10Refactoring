@@ -2,8 +2,8 @@ namespace Cccat10RefactoringCode.Models;
 
 public class Order
 {
-    private readonly List<Product> _products = new();
-    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+    private readonly List<OrderItem> _items = new();
+    public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     public CPF CPF { get; set; }
     public Coupon? Coupon { get; set; }
@@ -14,13 +14,13 @@ public class Order
         Coupon = coupon;
     }
 
-    public void AddProduct(Product product)
+    public void AddOrderItem(OrderItem item)
     {
-        if (_products.Any(x => x.Equals(product)))
+        if (_items.Any(x => x.Guid.Equals(item.Guid)))
         {
-            throw new ArgumentException("Item already added.", "product");
+            throw new ArgumentException("Item already added.", "item");
         }
-        _products.Add(product);
+        _items.Add(item);
     }
 
     public decimal GetTotalPrice()
@@ -29,9 +29,8 @@ public class Order
         {
             throw new InvalidOperationException($"The coupon is expired {Coupon.ExpiredDate}");
         }
-
-        var productsPriceSum = Products.Sum(x => x.Subtotal);
-        return Coupon?.ApplyDiscountTo(productsPriceSum) ?? productsPriceSum;
+        var itemsSubtotalSum = Items.Sum(x => x.Subtotal);
+        return Coupon?.ApplyDiscountTo(itemsSubtotalSum) ?? itemsSubtotalSum;
     }
 
     public decimal GetFeeTax() 
@@ -43,7 +42,7 @@ public class Order
     {
         if (!CPF.IsValid())
         {
-            throw new ArgumentException("value not valid", "cpf");
+            throw new InvalidOperationException("cpf is not valid");
         }
     }
 }
