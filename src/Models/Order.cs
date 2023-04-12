@@ -1,32 +1,45 @@
 namespace Cccat10RefactoringCode.Models;
 
-public class Order
+public class Order : BaseEntity
 {
-    private readonly List<Product> _products = new();
-    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+    private readonly List<OrderItem> _items = new();
+    public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
-    public CPF CPF { get; init; }
-    public Coupon? Coupon { get; init; }
+    public CPF CPF { get; set; }
+    public Coupon? Coupon { get; set; }
 
     public Order(string cpf, Coupon? coupon = null)
     {
         CPF = new(cpf);
-        if (!CPF.IsValid) 
-        {
-            throw new ArgumentException($"The CPF {cpf} is not valid.");
-        }
-
         Coupon = coupon;
     }
 
-    public void AddProduct(Product product) 
+    public void AddOrderItem(OrderItem item)
     {
-        _products.Add(product);
+        if (_items.Any(x => x.Guid.Equals(item.Guid)))
+        {
+            throw new ArgumentException("Item already added.", "item");
+        }
+        _items.Add(item);
     }
 
-    public decimal CalculatePrice()
+    public decimal GetSubtotalPrice()
     {
-        var productsPriceSum = Products.Sum(x => x.Subtotal);
-        return Coupon?.ApplyDiscountTo(productsPriceSum) ?? productsPriceSum;
+        if (Coupon?.ExpiredDate < DateTime.Now)
+        {
+            throw new InvalidOperationException($"The coupon is expired {Coupon.ExpiredDate}");
+        }
+        var itemsSubtotalSum = Items.Sum(x => x.Subtotal);
+        return Coupon?.ApplyDiscountTo(itemsSubtotalSum) ?? itemsSubtotalSum;
+    }
+
+    public double GetFeeTax() => Items.Sum(x => x.GetFeeTax());
+
+    public void MakeOrder()
+    {
+        if (!CPF.IsValid())
+        {
+            throw new InvalidOperationException("cpf is not valid");
+        }
     }
 }
