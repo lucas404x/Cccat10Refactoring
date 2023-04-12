@@ -16,7 +16,7 @@ public class OrderTests
         var order = new Order(VALID_CPF);
         PopulateOrder(order);
 
-        var actual = order.GetTotalPrice();
+        var actual = order.GetSubtotalPrice();
         Assert.That(actual, Is.EqualTo(74.05M));
     }
 
@@ -26,7 +26,7 @@ public class OrderTests
         var order = new Order(VALID_CPF, _coupon);
         PopulateOrder(order);
 
-        var actual = order.GetTotalPrice();
+        var actual = order.GetSubtotalPrice();
         Assert.That(actual, Is.EqualTo(66.645M));
     }
 
@@ -36,7 +36,20 @@ public class OrderTests
         var order = new Order(VALID_CPF, new Coupon(10, DateTime.MinValue));
         PopulateOrder(order);
 
-        Assert.Throws<InvalidOperationException>(() => order.GetTotalPrice());
+        Assert.Throws<InvalidOperationException>(() => order.GetSubtotalPrice());
+    }
+
+    [Test]
+    public void GetFeeTax_CalculateFeeOfAllItems_ReturnsTotalFee()
+    {
+        var order = new Order(VALID_CPF);
+        order.AddOrderItem(new OrderItem("", 10, Dimensions.FromCentimers(20, 15, 10), 1, 1));
+        order.AddOrderItem(new OrderItem("", 10, Dimensions.FromCentimers(100, 30, 10), 1, 3));
+        order.AddOrderItem(new OrderItem("", 10, Dimensions.FromCentimers(200, 100, 50), 1, 40));
+
+        var actual = order.GetFeeTax();
+
+        Assert.That(actual, Is.EqualTo(440));
     }
 
     [Test]
@@ -50,7 +63,7 @@ public class OrderTests
     public void CreateOrder_AddSameItem_ThrowsException() 
     {
         var order = new Order(VALID_CPF, _coupon);
-        var item = new OrderItem("Untitled", 20M, Dimensions.Square(5), 1);
+        var item = new OrderItem("Untitled", 20M, Dimensions.FromCentimers(20, 13, 15), 1, 1);
         Assert.Throws<ArgumentException>(() =>
         {
             order.AddOrderItem(item);
@@ -61,8 +74,9 @@ public class OrderTests
 
     private void PopulateOrder(Order order) 
     {
-        order.AddOrderItem(new OrderItem("Soja", 18.25M, Dimensions.Square(3), 1));
-        order.AddOrderItem(new OrderItem("Ovos", 10.60M, Dimensions.Square(20), 3));
-        order.AddOrderItem(new OrderItem("Abacate", 6.0M, Dimensions.Square(5), 4));
+        var dim = Dimensions.FromCentimers(20, 13, 15);
+        order.AddOrderItem(new OrderItem("Soja", 18.25M, dim, 1, 1));
+        order.AddOrderItem(new OrderItem("Ovos", 10.60M, dim, 3, 1));
+        order.AddOrderItem(new OrderItem("Abacate", 6.0M, dim, 4, 1));
     }
 }

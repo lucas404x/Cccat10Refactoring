@@ -1,6 +1,6 @@
 namespace Cccat10RefactoringCode.Models;
 
-public class Order
+public class Order : BaseEntity
 {
     private readonly List<OrderItem> _items = new();
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
@@ -23,7 +23,7 @@ public class Order
         _items.Add(item);
     }
 
-    public decimal GetTotalPrice()
+    public decimal GetSubtotalPrice()
     {
         if (Coupon?.ExpiredDate < DateTime.Now)
         {
@@ -33,10 +33,7 @@ public class Order
         return Coupon?.ApplyDiscountTo(itemsSubtotalSum) ?? itemsSubtotalSum;
     }
 
-    public decimal GetFeeTax() 
-    {
-        return 0;
-    }
+    public double GetFeeTax() => Items.Sum(x => x.GetFeeTax());
 
     public void MakeOrder()
     {

@@ -1,6 +1,6 @@
 namespace Cccat10RefactoringCode.Models;
 
-public class Coupon
+public class Coupon : BaseEntity
 {
     public decimal PercentDiscount { get; private set; }
     public DateTime ExpiredDate { get; private set; }
