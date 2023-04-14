@@ -53,4 +53,12 @@ public class OrderItemTests
         var actual = item.GetFeeTax();
         Assert.That(actual, Is.EqualTo(10));
     }
+
+    [Test]
+    public void OrderItem_GetFeeTaxWithQuantityMoreThanOne_ReturnsTax() 
+    {
+        var item = new OrderItem("Untitled", 500, Dimensions.FromCentimers(20, 15, 10), 1, 3);
+        var actual = item.GetFeeTax();
+        Assert.That(actual, Is.EqualTo(30));
+    }
 }

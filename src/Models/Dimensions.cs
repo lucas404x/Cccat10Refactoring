@@ -15,6 +15,11 @@ public record Dimensions
     
     private Dimensions(double width, double height, double length) 
     {
+        if (width < 0 || height < 0 || length < 0) 
+        {
+            throw new ArgumentOutOfRangeException("the dimension must have positive numbers only");
+        }
+
         Width = width;
         Height = height;
         Length = length;

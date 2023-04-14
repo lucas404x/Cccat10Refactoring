@@ -3,6 +3,7 @@ namespace Cccat10RefactoringCode.Models;
 public class OrderItem : BaseEntity
 {
     private const short FEE_DISTANCE_KM = 1000;
+    private const byte MIN_FEE_TAX = 10;
 
     public string Description { get; private set; }
     public decimal Price { get; private set; }
@@ -36,7 +37,8 @@ public class OrderItem : BaseEntity
 
     public double GetFeeTax() 
     {
-        var result = Math.Round(FEE_DISTANCE_KM * Dimensions.Volume * (Density / 100), 2);
-        return result >= 10 ? result : 10;
+        var calculatedFeeTax = Math.Round(FEE_DISTANCE_KM * Dimensions.Volume * (Density / 100), 2);
+        var result = Math.Max(calculatedFeeTax, MIN_FEE_TAX) * Quantity;
+        return result;
     }
 }
