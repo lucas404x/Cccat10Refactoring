@@ -1,6 +1,6 @@
-using Cccat10RefactoringCode.Utils;
+using Cccat10RefactoringDomain.Utils;
 
-namespace Cccat10RefactoringCode.Models;
+namespace Cccat10RefactoringDomain.Models;
 
 public class CPF
 {
@@ -44,7 +44,7 @@ public class CPF
 
     private static bool AreAllDigitsTheSame(string cpf)
     {
-        var firstDigit = cpf.Substring(0, 1);
+        var firstDigit = cpf[..1];
         return cpf.Split("").All(digit => digit == firstDigit);
     }
 
