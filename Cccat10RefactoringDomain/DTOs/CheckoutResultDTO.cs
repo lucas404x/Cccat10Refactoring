@@ -3,5 +3,5 @@
 public class CheckoutResultDTO
 {
     public decimal Total { get; set; }
-    public decimal FeeTax { get; set; }
+    public double FeeTax { get; set; }
 }

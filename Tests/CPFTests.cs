@@ -1,5 +1,5 @@
-using Cccat10RefactoringDomain.Models;
 using Cccat10RefactoringDomain.Utils;
+using Cccat10RefactoringDomain.ValueObjects;
 
 namespace Cccat10RefactoringTests;
 

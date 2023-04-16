@@ -32,6 +32,7 @@ public class Checkout
             }
             var product = await _productRepository.GetProductAsync(productCheckout.Id);
             output.Total += product.Price * productCheckout.Quantity;
+            output.FeeTax += product.GetFeeTax() * productCheckout.Quantity;
             processedProducts.Add(productCheckout.Id);
         }
         if (input.CouponId != null)
@@ -42,6 +43,10 @@ public class Checkout
                 throw new InvalidOperationException("The requested coupon is expired.");
             }
             output.Total = coupon.ApplyDiscountTo(output.Total);
+        }
+        if (!string.IsNullOrWhiteSpace(input.From) && !string.IsNullOrWhiteSpace(input.To))
+        {
+            output.Total += (decimal)output.FeeTax;
         }
         return output;
     }

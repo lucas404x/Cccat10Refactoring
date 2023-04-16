@@ -1,8 +1,8 @@
-using Cccat10RefactoringDomain.Utils;
+﻿using Cccat10RefactoringDomain.Utils;
 
-namespace Cccat10RefactoringDomain.Models;
+namespace Cccat10RefactoringDomain.ValueObjects;
 
-public class CPF
+public class CPF : ValueObject
 {
     private const int CPF_LENGTH = 11;
     private const int HIGHEST_WEIGHT = 12;
@@ -14,7 +14,7 @@ public class CPF
         Value = CPFUtils.RemoveMask(value);
     }
 
-    public bool IsValid()
+    public override bool IsValid()
     {
         if (string.IsNullOrWhiteSpace(Value))
             return false;

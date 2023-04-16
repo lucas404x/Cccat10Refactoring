@@ -2,8 +2,8 @@
 using Cccat10RefactoringDomain.DTOs;
 using Cccat10RefactoringDomain.Repositories;
 using Cccat10RefactoringDomain.Usecases;
+using Cccat10RefactoringDomain.ValueObjects;
 using Moq;
-using System;
 
 namespace Cccat10RefactoringTests;
 
@@ -64,8 +64,8 @@ public class CheckoutTests
     [Test]
     public async Task Checkout_TotalWithoutDiscount_ReturnsResult()
     {
-        var product1 = new Product("", 18.25M, 10, 10, 10, 10);
-        var product2 = new Product("", 10.60M, 10, 10, 10, 10);
+        var product1 = new Product("", 18.25M, 100, 30, 10, 3);
+        var product2 = new Product("", 10.60M, 20, 15, 10, 1);
         _productRepositoryMock.Setup(x => x.GetProductAsync(product1.Guid).Result).Returns(product1);
         _productRepositoryMock.Setup(x => x.GetProductAsync(product2.Guid).Result).Returns(product2);
 
@@ -89,14 +89,18 @@ public class CheckoutTests
 
         var actual = await _checkout.Execute(input);
 
-        Assert.That(actual.Total, Is.EqualTo(112.45M));
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.Total, Is.EqualTo(112.45M));
+            Assert.That(actual.FeeTax, Is.EqualTo(170));
+        });
     }
 
     [Test]
     public async Task Checkout_TotalWithDiscount_ReturnsResult()
     {
-        var product1 = new Product("", 18.25M, 10, 10, 10, 10);
-        var product2 = new Product("", 10.60M, 10, 10, 10, 10);
+        var product1 = new Product("", 18.25M, 100, 30, 10, 3);
+        var product2 = new Product("", 10.60M, 20, 15, 10, 1);
         _productRepositoryMock.Setup(x => x.GetProductAsync(product1.Guid).Result).Returns(product1);
         _productRepositoryMock.Setup(x => x.GetProductAsync(product2.Guid).Result).Returns(product2);
         _couponRepositoryMock.Setup(x => x.GetCouponAsync(_validCoupon.Guid).Result).Returns(_validCoupon);
@@ -117,12 +121,19 @@ public class CheckoutTests
                     Quantity = 2
                 }
             },
-            CouponId = _validCoupon.Guid
+            CouponId = _validCoupon.Guid,
+            From = "ABC",
+            To = "DEFG",
         };
 
         var actual = await _checkout.Execute(input);
 
-        Assert.That(actual.Total, Is.EqualTo(101.205M));
+        Assert.Multiple(() =>
+        {
+            // TOTAL = (SUBTOTAL + FeeTax) - Discount
+            Assert.That(actual.Total, Is.EqualTo(271.205M)); 
+            Assert.That(actual.FeeTax, Is.EqualTo(170));
+        });
     }
 
     [Test]
