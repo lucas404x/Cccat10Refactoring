@@ -43,14 +43,14 @@ public class CheckoutTests
         var input = new CheckoutDTO
         {
             CPF = _validCPF,
-            Products = new List<ProductCheckoutDTO>
+            Products = new List<ProductIdQuantityDTO>
             {
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product.Guid,
                     Quantity = 5,
                 },
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product.Guid,
                     Quantity = 2
@@ -72,14 +72,14 @@ public class CheckoutTests
         var input = new CheckoutDTO
         {
             CPF = _validCPF,
-            Products = new List<ProductCheckoutDTO>
+            Products = new List<ProductIdQuantityDTO>
             {
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product1.Guid,
                     Quantity = 5,
                 },
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product2.Guid,
                     Quantity = 2
@@ -108,14 +108,14 @@ public class CheckoutTests
         var input = new CheckoutDTO
         {
             CPF = _validCPF,
-            Products = new List<ProductCheckoutDTO>
+            Products = new List<ProductIdQuantityDTO>
             {
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product1.Guid,
                     Quantity = 5,
                 },
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product2.Guid,
                     Quantity = 2
@@ -146,9 +146,9 @@ public class CheckoutTests
         var input = new CheckoutDTO
         {
             CPF = _validCPF,
-            Products = new List<ProductCheckoutDTO>
+            Products = new List<ProductIdQuantityDTO>
             {
-                new ProductCheckoutDTO
+                new ProductIdQuantityDTO
                 {
                     Id = product1.Guid,
                     Quantity = 5,
