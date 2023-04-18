@@ -1,4 +1,4 @@
-namespace Cccat10RefactoringCode.Utils;
+namespace Cccat10RefactoringDomain.Utils;
 
 public static class CPFUtils 
 {

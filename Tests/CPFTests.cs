@@ -1,5 +1,5 @@
-using Cccat10RefactoringCode.Models;
-using Cccat10RefactoringCode.Utils;
+using Cccat10RefactoringDomain.Utils;
+using Cccat10RefactoringDomain.ValueObjects;
 
 namespace Cccat10RefactoringTests;
 
@@ -11,8 +11,11 @@ public class CPFTests
     public void CreateCPF_ValidValue_ReturnsCPFWithIsValidAsTrue(string cpf)
     {
         var actual = new CPF(cpf);
-        Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
-        Assert.That(actual.IsValid(), Is.True);
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
+            Assert.That(actual.IsValid(), Is.True);
+        });
     }
 
     [TestCase("")]
@@ -23,7 +26,10 @@ public class CPFTests
     public void CreateCPF_InvalidValue_ReturnsCPFWithIsValidAsFalse(string cpf)
     {
         var actual = new CPF(cpf);
-        Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
-        Assert.That(actual.IsValid(), Is.False);
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.Value, Is.EqualTo(CPFUtils.RemoveMask(cpf)));
+            Assert.That(actual.IsValid(), Is.False);
+        });
     }
 }
