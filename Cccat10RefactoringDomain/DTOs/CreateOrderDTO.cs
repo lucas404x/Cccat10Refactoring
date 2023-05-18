@@ -1,11 +1,11 @@
-﻿using Cccat10RefactoringDomain.ValueObjects;
+﻿using Cccat10RefactoringDomain.Models;
+using Cccat10RefactoringDomain.ValueObjects;
 
 namespace Cccat10RefactoringDomain.DTOs;
-public class CreateOrderDTO
-{
-    public List<ProductIdQuantityDTO> Products { get; init; } = null!;
-    public Guid Coupon { get; init; }
-    public CPF CPF { get; init; } = null!;
-    public string? From { get; init; }
-    public string? To { get; init; }
-}
+
+public record CreateOrderDTO(
+    List<ProductIdQuantityDTO> Products,
+    Coupon? Coupon,
+    CPF CPF,
+    string? From,
+    string? To);

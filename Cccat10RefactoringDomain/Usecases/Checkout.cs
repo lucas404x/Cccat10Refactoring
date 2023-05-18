@@ -23,7 +23,7 @@ public class Checkout
             throw new ArgumentException("CPF is not valid.", nameof(input.CPF));
         }
         var output = new CheckoutResultDTO();
-        var processedProducts = new List<Guid>();
+        var processedProducts = new List<long>();
         foreach (var productCheckout in input.Products)
         {
             if (processedProducts.Contains(productCheckout.Id))
@@ -37,7 +37,7 @@ public class Checkout
         }
         if (input.CouponId != null)
         {
-            var coupon = await _couponRepository.GetCouponAsync((Guid)input.CouponId);
+            var coupon = await _couponRepository.GetCouponAsync((long)input.CouponId);
             if (coupon.IsDateExpired())
             {
                 throw new InvalidOperationException("The requested coupon is expired.");
