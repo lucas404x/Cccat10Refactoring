@@ -4,8 +4,6 @@ namespace Cccat10RefactoringDomain.Models;
 
 public class Product : BaseEntity
 {
-    private const byte MIN_FEE_TAX = 10;
-    private const short FEE_DISTANCE_KM = 1000;
     private const int CUBIC_DIVISOR = 1_000_000;
 
     public string Description { get; private set; }
@@ -44,11 +42,5 @@ public class Product : BaseEntity
         Height = height;
         Length = length;
         Weight = weight;
-    }
-
-    public double GetFeeTax()
-    {
-        var calculatedFeeTax = Math.Round(FEE_DISTANCE_KM * Volume * (Density / 100), 2);
-        return Math.Max(calculatedFeeTax, MIN_FEE_TAX);
     }
 }

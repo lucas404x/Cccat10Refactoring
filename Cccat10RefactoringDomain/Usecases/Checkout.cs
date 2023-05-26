@@ -5,46 +5,42 @@ namespace Cccat10RefactoringDomain.Usecases;
 
 public class Checkout
 {
-    private readonly IProductRepository _productRepository;
-    private readonly ICouponRepository _couponRepository;
+    private readonly IOrderRepository _orderRepository;
 
-    public Checkout(
-        IProductRepository productRepository,
-        ICouponRepository couponRepository)
+    public Checkout(IOrderRepository orderRepository)
     {
-        _productRepository = productRepository;
-        _couponRepository = couponRepository;
+        _orderRepository = orderRepository;
     }
 
-    public async Task<CheckoutResultDTO> Execute(CheckoutDTO input)
+    public async Task<CheckoutResultDTO> Execute(Guid orderId)
     {
-        if (!input.CPF.IsValid())
+        var order = await _orderRepository.GetOrderAsync(orderId);
+        if (order == null)
         {
-            throw new ArgumentException("CPF is not valid.", nameof(input.CPF));
+            throw new ArgumentNullException(nameof(order), "Order doesn't exist.");
         }
-        var output = new CheckoutResultDTO();
-        var processedProducts = new List<long>();
-        foreach (var productCheckout in input.Products)
+        if (order.Items.Count == 0)
         {
-            if (processedProducts.Contains(productCheckout.Id))
-            {
-                throw new InvalidOperationException("Detected duplicated products.");
-            }
-            var product = await _productRepository.GetProductAsync(productCheckout.Id);
-            output.Total += product.Price * productCheckout.Quantity;
-            output.FeeTax += product.GetFeeTax() * productCheckout.Quantity;
-            processedProducts.Add(productCheckout.Id);
+            throw new ArgumentOutOfRangeException("Order must have at least one item.");
         }
-        if (input.CouponId != null)
+        if (!order.CPF.IsValid())
         {
-            var coupon = await _couponRepository.GetCouponAsync((long)input.CouponId);
-            if (coupon.IsDateExpired())
+            throw new ArgumentException("CPF is not valid.");
+        }
+        var output = new CheckoutResultDTO
+        {
+            Total = order.GetTotal(),
+            FeeTax = order.Items.Sum(x => x.GetFeeTax())
+        };
+        if (order.Coupon != null)
+        {
+            if (order.Coupon.IsDateExpired())
             {
                 throw new InvalidOperationException("The requested coupon is expired.");
             }
-            output.Total = coupon.ApplyDiscountTo(output.Total);
+            output.Total = order.Coupon.ApplyDiscountTo(output.Total);
         }
-        if (!string.IsNullOrWhiteSpace(input.From) && !string.IsNullOrWhiteSpace(input.To))
+        if (!string.IsNullOrWhiteSpace(order.From) && !string.IsNullOrWhiteSpace(order.To))
         {
             output.Total += (decimal)output.FeeTax;
         }

@@ -4,7 +4,7 @@ using Cccat10RefactoringDomain.ValueObjects;
 namespace Cccat10RefactoringDomain.DTOs;
 
 public record CreateOrderDTO(
-    List<ProductIdQuantityDTO> Products,
+    List<ProductIdQuantityDTO> Items,
     Coupon? Coupon,
     CPF CPF,
     string? From,

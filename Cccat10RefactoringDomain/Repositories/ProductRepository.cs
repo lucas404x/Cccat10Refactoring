@@ -4,5 +4,5 @@ namespace Cccat10RefactoringDomain.Repositories;
 
 public interface IProductRepository
 {
-    public Task<Product> GetProductAsync(long id);
+    public Task<Product?> GetProductAsync(long id);
 }
