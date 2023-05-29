@@ -7,8 +7,13 @@ public static class SQLHelper
 {
     public static string ConnectionString { get; set; } = null!;
 
-    public static DbConnection GetConnection()
+    public static async Task<DbConnection> GetConnection(bool openConnection = true)
     {
-        return new SqliteConnection(ConnectionString);
+        var connection = new SqliteConnection(ConnectionString);
+        if (openConnection)
+        {
+            await connection.OpenAsync();
+        }
+        return connection;
     }
 }

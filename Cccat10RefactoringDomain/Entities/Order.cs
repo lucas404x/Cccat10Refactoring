@@ -11,7 +11,7 @@ public class Order : BaseEntity
     public string? From { get; set; }
     public string? To { get; set; }
 
-    private readonly List<OrderItem> _items;
+    private List<OrderItem> _items;
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     public Order(CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
