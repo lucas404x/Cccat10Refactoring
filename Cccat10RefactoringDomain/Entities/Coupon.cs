@@ -4,9 +4,11 @@ namespace Cccat10RefactoringDomain.Models;
 
 public class Coupon : BaseEntity
 {
-    public string Description { get; private set; }
-    public decimal PercentDiscount { get; private set; }
-    public DateTime ExpiredDate { get; private set; }
+    public string? Description { get; set; }
+    public decimal PercentDiscount { get; set; }
+    public DateTime ExpiredDate { get; set; }
+
+    public Coupon() { }
 
     public Coupon(string description, decimal percentDiscount, DateTime expiredDate) 
     {

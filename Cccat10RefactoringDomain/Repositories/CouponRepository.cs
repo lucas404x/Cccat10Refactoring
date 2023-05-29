@@ -4,5 +4,6 @@ namespace Cccat10RefactoringDomain.Repositories;
 
 public interface ICouponRepository
 {
-    public Task<Coupon> GetCouponAsync(long id);
+    public Task<Coupon?> GetCouponAsync(Guid id);
+    public Task<Coupon> CreateCouponAsync(Coupon coupon);
 }

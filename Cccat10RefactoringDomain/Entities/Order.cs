@@ -6,10 +6,10 @@ namespace Cccat10RefactoringDomain.Entities;
 
 public class Order : BaseEntity
 {
-    public CPF CPF { get; }
-    public Coupon? Coupon { get; }
-    public string? From { get; }
-    public string? To { get;  }
+    public CPF CPF { get; set; }
+    public Coupon? Coupon { get; set; }
+    public string? From { get; set; }
+    public string? To { get; set; }
 
     private readonly List<OrderItem> _items;
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
@@ -28,6 +28,10 @@ public class Order : BaseEntity
         if (_items.Any(x => x.Id == item.Id))
         {
             throw new ArgumentException("The item was already added.");
+        }
+        if (item.Quantity == 0)
+        {
+            throw new ArgumentOutOfRangeException();
         }
         _items.Add(item);
     }
