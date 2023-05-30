@@ -9,7 +9,11 @@ public static class SQLHelper
 
     public static async Task<DbConnection> GetConnection(bool openConnection = true)
     {
-        var connection = new SqliteConnection(ConnectionString);
+        var connectionString = new SqliteConnectionStringBuilder(ConnectionString)
+        {
+            ForeignKeys = true,
+        }.ToString();
+        var connection = new SqliteConnection(connectionString);
         if (openConnection)
         {
             await connection.OpenAsync();
