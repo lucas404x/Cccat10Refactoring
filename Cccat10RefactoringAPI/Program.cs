@@ -1,5 +1,6 @@
 using Cccat10RefactoringAPI.Infra;
 using Cccat10RefactoringAPI.Infra.Repositories;
+using Cccat10RefactoringAPI.Infra.TypeHandlers;
 using Cccat10RefactoringDomain.Repositories;
 using Dapper;
 using System.Data;
@@ -11,10 +12,12 @@ SQLHelper.ConnectionString = builder.Configuration.GetConnectionString("DataSour
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
-// builder.Services.AddSqlite()
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-// Make Dapper convert String to GUID correctly.
-SqlMapper.AddTypeHandler(new SqliteGuidTypeHandler());
+// Configure Custom Type Handlers for Dapper
+SqlMapper.AddTypeHandler(new CPFTypeHandler());
+SqlMapper.AddTypeHandler(new SQLiteGuidTypeHandler());
 SqlMapper.RemoveTypeMap(typeof(Guid));
 SqlMapper.RemoveTypeMap(typeof(Guid?));
 
@@ -38,20 +41,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-public class SqliteGuidTypeHandler : SqlMapper.TypeHandler<Guid>
-{
-    public override Guid Parse(object value)
-    {
-        if (value is Guid)
-        {
-            return (Guid)value;
-        }
-        return new Guid((string)value);
-    }
-
-    public override void SetValue(IDbDataParameter parameter, Guid value)
-    {
-        parameter.Value = value.ToString();
-    }
-}

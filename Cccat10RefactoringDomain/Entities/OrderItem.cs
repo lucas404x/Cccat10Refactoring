@@ -7,8 +7,7 @@ public class OrderItem : BaseEntity
     private const byte MIN_FEE_TAX = 10;
     private const short FEE_DISTANCE_KM = 1000;
 
-    // public Guid OrderId { get; set; }
-    public Order Order { get; set; } = null!;
+    public Guid OrderId { get; set; }
     public Product Product { get; set; } = null!;
     public int Quantity { get; set; }
 

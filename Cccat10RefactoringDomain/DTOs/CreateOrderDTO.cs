@@ -5,7 +5,7 @@ namespace Cccat10RefactoringDomain.DTOs;
 
 public record CreateOrderDTO(
     List<ProductIdQuantityDTO> Items,
-    Coupon? Coupon,
-    CPF CPF,
+    Guid? CouponId,
+    string CPF,
     string? From,
     string? To);

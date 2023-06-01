@@ -6,7 +6,7 @@ public class Product : BaseEntity
 {
     private const int CUBIC_DIVISOR = 1_000_000;
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public decimal Price { get; set; }
     public double Width { get; set; }
     public double Height { get; set; }
@@ -14,6 +14,8 @@ public class Product : BaseEntity
     public double Weight { get; set; }
     public double Volume => Width * Height * Length / CUBIC_DIVISOR;
     public double Density => Math.Round(Weight / Volume);
+
+    public Product() { }
 
     public Product(
         string description,

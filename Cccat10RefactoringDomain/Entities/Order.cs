@@ -6,13 +6,15 @@ namespace Cccat10RefactoringDomain.Entities;
 
 public class Order : BaseEntity
 {
-    public CPF CPF { get; set; }
+    public CPF CPF { get; set; } = new("");
     public Coupon? Coupon { get; set; }
     public string? From { get; set; }
     public string? To { get; set; }
 
-    private List<OrderItem> _items;
+    private List<OrderItem> _items = new();
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
+
+    public Order() { }
 
     public Order(CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
     {

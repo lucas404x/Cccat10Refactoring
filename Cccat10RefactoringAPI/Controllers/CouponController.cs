@@ -2,12 +2,11 @@
 using Cccat10RefactoringDomain.Models;
 using Cccat10RefactoringDomain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace Cccat10RefactoringAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CouponController : ControllerBase
 {
     private readonly ICouponRepository _couponRepository;
