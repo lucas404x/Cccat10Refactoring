@@ -13,6 +13,6 @@ public class CPFTypeHandler : SqlMapper.TypeHandler<CPF>
 
     public override void SetValue(IDbDataParameter parameter, CPF value)
     {
-        parameter.Value = value.ToString();
+        parameter.Value = value.Value;
     }
 }

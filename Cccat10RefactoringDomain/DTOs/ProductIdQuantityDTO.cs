@@ -2,6 +2,6 @@
 
 public record ProductIdQuantityDTO
 {
-    public long Id { get; init; }
+    public Guid Id { get; init; }
     public int Quantity { get; init; }
 }

@@ -17,11 +17,11 @@ public class Checkout
         var order = await _orderRepository.GetOrderAsync(orderId);
         if (order == null)
         {
-            throw new ArgumentNullException(nameof(order), "Order doesn't exist.");
+            throw new ArgumentNullException(nameof(orderId), "Order does not exist.");
         }
         if (order.Items.Count == 0)
         {
-            throw new ArgumentOutOfRangeException("Order must have at least one item.");
+            throw new ArgumentOutOfRangeException(nameof(order.Items), 0, "Order must have at least one item.");
         }
         if (!order.CPF.IsValid())
         {
@@ -34,9 +34,9 @@ public class Checkout
         };
         if (order.Coupon != null)
         {
-            if (order.Coupon.IsDateExpired())
+            if (order.Coupon.IsValid())
             {
-                throw new InvalidOperationException("The requested coupon is expired.");
+                throw new InvalidOperationException("The requested coupon is not valid.");
             }
             output.Total = order.Coupon.ApplyDiscountTo(output.Total);
         }

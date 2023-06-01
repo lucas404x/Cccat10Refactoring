@@ -22,7 +22,13 @@ public class CouponController : ControllerBase
         var response = new ApiResponse<Coupon>();
         try
         {
-            response.Result = await _couponRepository.GetCouponAsync(id);
+            var result = await _couponRepository.GetCouponAsync(id);
+            if (result == null)
+            {
+                response.ErrorMessage = "The requested coupon does not exist.";
+                return NotFound(response);
+            }
+            response.Result = result;
             return Ok(response);
         }
         catch (Exception ex)
@@ -39,6 +45,28 @@ public class CouponController : ControllerBase
         try
         {
             response.Result = await _couponRepository.CreateCouponAsync(coupon);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            response.ErrorMessage = ex.Message;
+            return StatusCode(StatusCodes.Status500InternalServerError, response);
+        }
+    }
+
+    [HttpGet("Validate/{id}")]
+    public async Task<IActionResult> ValidateCouponAsync([FromRoute] Guid id)
+    {
+        var response = new ApiResponse<bool>();
+        try
+        {
+            var result = await _couponRepository.GetCouponAsync(id);
+            if (result == null)
+            {
+                response.ErrorMessage = "The requested coupon does not exist.";
+                return NotFound(response);
+            }
+            response.Result = result.IsValid();
             return Ok(response);
         }
         catch (Exception ex)

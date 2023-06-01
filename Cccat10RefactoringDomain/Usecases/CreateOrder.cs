@@ -29,10 +29,6 @@ public class CreateOrder
         {
             throw new ArgumentException("CPF is not valid.");
         }
-        if (input.Items.Count == 0)
-        {
-            throw new ArgumentOutOfRangeException("At least one product must be provided.");
-        }
         Coupon? coupon = null;
         if (input.CouponId != null)
         {
@@ -41,7 +37,7 @@ public class CreateOrder
             {
                 throw new ArgumentException("The provided coupon does not exist.");
             }
-            if (coupon.IsDateExpired())
+            if (!coupon.IsValid())
             {
                 throw new ArgumentException("The provided coupon is invalid.");
             }

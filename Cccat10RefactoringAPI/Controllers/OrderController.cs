@@ -41,6 +41,28 @@ public class OrderController : ControllerBase
         }
     }
 
+    [HttpGet("SimulateFeeTax/{id}")]
+    public async Task<IActionResult> SimulateFeeTaxAsync([FromRoute] Guid id)
+    {
+        var response = new ApiResponse<double>();
+        try
+        {
+            var order = await _orderRepository.GetOrderAsync(id);
+            if (order == null)
+            {
+                response.ErrorMessage = "The requested Order does not exist.";
+                return NotFound(response);
+            }
+            response.Result = order.Items.Sum(x => x.GetFeeTax());
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            response.ErrorMessage = ex.Message;
+            return StatusCode(StatusCodes.Status500InternalServerError, response);
+        }
+    }
+
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] CreateOrderDTO input)
     {
