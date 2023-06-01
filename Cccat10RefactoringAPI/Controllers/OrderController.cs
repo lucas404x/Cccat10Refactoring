@@ -41,6 +41,40 @@ public class OrderController : ControllerBase
         }
     }
 
+    [HttpPost]
+    public async Task<IActionResult> PostAsync([FromBody] CreateOrderDTO input)
+    {
+        var response = new ApiResponse<Order>();
+        var usecase = new CreateOrder(_orderRepository, _productRepository, _couponRepository);
+        try
+        {
+            response.Result = await usecase.Execute(input);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            response.ErrorMessage = ex.Message;
+            return StatusCode(StatusCodes.Status500InternalServerError, response);
+        }
+    }
+
+    [HttpPost("Checkout/{id}")]
+    public async Task<IActionResult> CheckoutAsync([FromRoute] Guid id)
+    {
+        var response = new ApiResponse<CheckoutResultDTO>();
+        var usecase = new Checkout(_orderRepository);
+        try
+        {
+            response.Result = await usecase.Execute(id);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            response.ErrorMessage = ex.Message;
+            return StatusCode(StatusCodes.Status500InternalServerError, response);
+        }
+    }
+
     [HttpGet("SimulateFeeTax/{id}")]
     public async Task<IActionResult> SimulateFeeTaxAsync([FromRoute] Guid id)
     {
@@ -54,23 +88,6 @@ public class OrderController : ControllerBase
                 return NotFound(response);
             }
             response.Result = order.Items.Sum(x => x.GetFeeTax());
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            response.ErrorMessage = ex.Message;
-            return StatusCode(StatusCodes.Status500InternalServerError, response);
-        }
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] CreateOrderDTO input)
-    {
-        var response = new ApiResponse<Order>();
-        var usecase = new CreateOrder(_orderRepository, _productRepository, _couponRepository);
-        try
-        {
-            response.Result = await usecase.Execute(input);
             return Ok(response);
         }
         catch (Exception ex)
