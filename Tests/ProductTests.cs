@@ -16,6 +16,7 @@ public class ProductTests
         double length, 
         double weight)
     {
+
         Assert.Throws<ArgumentException>(() => new Product("", price, width, height, length, weight));
     }
 
@@ -40,28 +41,5 @@ public class ProductTests
         var product = new Product("Untitled", 1, 20, 15, 10, 1);
         var actual = product.Volume;
         Assert.That(actual, Is.EqualTo(0.003));
-    }
-
-    [TestCase(100, 30, 10, 3, 30)]
-    [TestCase(200, 100, 50, 40, 400)]
-    public void Product_GetFeeTaxWithValidParams_ReturnsResult(
-        double width, 
-        double height, 
-        double length, 
-        double weight,
-        double expected) 
-    {
-        var product = new Product("Untitled", 1, width, height, length, weight);
-        var actual = product.GetFeeTax();
-        Assert.That(actual, Is.EqualTo(expected));
-    }
-
-    [Test]
-    public void Product_GetFeeTaxWithLowTax_ReturnsMinTax() 
-    {
-        var product = new Product("Untitled", 1, 20, 15, 10, 1);
-        // The actual tax should be 9.90, but it must returns 10 because it's the min tax allowed.
-        var actual = product.GetFeeTax();
-        Assert.That(actual, Is.EqualTo(10));
     }
 }

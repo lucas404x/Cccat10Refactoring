@@ -1,24 +1,58 @@
 ﻿using Cccat10RefactoringDomain.Models;
 using Cccat10RefactoringDomain.ValueObjects;
+using System.Collections.ObjectModel;
 
 namespace Cccat10RefactoringDomain.Entities;
 
 public class Order : BaseEntity
 {
-    private readonly List<Product> _products;
+    public CPF CPF { get; set; } = new("");
+    public Coupon? Coupon { get; set; }
+    public string? From { get; set; }
+    public string? To { get; set; }
 
-    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
-    public decimal Total { get; private set; }
-    public double FeeTax { get; private set; }
-    public CPF CPF { get; private set; }
-    public Coupon? Coupon { get; private set; }
+    private List<OrderItem> _items = new();
+    public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
-    public Order(decimal total, double feeTax, List<Product> products, CPF cpf, Coupon? coupon)
+    public Order() { }
+
+    public Order(Guid id, CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
     {
-        Total = total;
-        FeeTax = feeTax;
+        Id = id;
         Coupon = coupon;
         CPF = cpf;
-        _products = products;
+        From = from;
+        To = to;
+        _items = items;
+    }
+
+    public Order(CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
+    {
+        Coupon = coupon;
+        CPF = cpf;
+        From = from;
+        To = to;
+        _items = items;
+    }
+
+    public void AddItem(OrderItem item)
+    {
+        if (_items.Any(x => x.Id == item.Id))
+        {
+            throw new ArgumentException("The item was already added.");
+        }
+        if (item.Quantity == 0)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+        _items.Add(item);
+    }
+
+    public decimal GetTotal() => _items.Sum(x => x.Product.Price * x.Quantity);
+
+    public string GetCode()
+    {
+        string id = Id.ToString().Replace("-", "").ToUpper();
+        return $"{DateTime.Now.Year}{id}";
     }
 }

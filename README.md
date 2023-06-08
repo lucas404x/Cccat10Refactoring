@@ -1,4 +1,4 @@
-# Part1
+# Parte 1
 
 ## Objetivo
 
@@ -24,7 +24,7 @@ Utilizar e refatorar o algoritmo de validação de cpf: https://github.com/rodri
 - Como entrada você pode utilizar uma API HTTP, um CLI ou qualquer outro mecanismo que permita a entrada dos dados
 - Tente seguir com disciplina, criando primeiro um teste que falha, depois fazendo e teste passar e refatorando
 
-# Part2
+# Parte 2
 
 ### Testes
 
@@ -78,3 +78,22 @@ distância: 1000 (fixo)
 volume: 1
 densidade: 40
 preço: R$400,00 (1000 * 1 * (40/100))
+
+# Parte 3
+
+### Testes
+
+- [x] Deve gerar o número de série do pedido
+- [x] Deve fazer um pedido, salvando no banco de dados
+- [x] Deve simular o frete, retornando o frete previsto para o pedido
+- [x] Deve validar o cupom de desconto, indicando em um boolean se o cupom é válido
+
+
+### Considere
+
+O número de série do pedido é formado por AAAAPPPPPPPP onde AAAA representa o ano e o PPPPPPPP representa um sequencial do pedido
+
+### Importante
+
+Implemente os DTOs para cada um dos use cases
+Utilize o banco de dados para obter e persistir os dados

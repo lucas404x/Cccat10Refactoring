@@ -7,11 +7,16 @@ public class CPF : ValueObject
     private const int CPF_LENGTH = 11;
     private const int HIGHEST_WEIGHT = 12;
 
-    public string Value { get; private set; }
+    private string _value;
+    public string Value
+    {
+        get => _value;
+        set => _value = CPFUtils.RemoveMask(value);
+    }
 
     public CPF(string value)
     {
-        Value = CPFUtils.RemoveMask(value);
+        _value = CPFUtils.RemoveMask(value);
     }
 
     public override bool IsValid()
