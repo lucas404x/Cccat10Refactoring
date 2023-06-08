@@ -1,16 +1,10 @@
-using Cccat10RefactoringDomain.DTOs;
 using Cccat10RefactoringDomain.Entities;
 using Cccat10RefactoringDomain.Models;
-using Cccat10RefactoringDomain.Usecases;
-using Cccat10RefactoringDomain.ValueObjects;
-using NUnit.Framework.Interfaces;
 
 namespace Cccat10RefactoringTests;
 
 public class OrderItemTests
 {
-    private readonly CPF _validCPF = new("68205913226");
-
     [TestCase(100, 30, 10, 3, 30)]
     [TestCase(200, 100, 50, 40, 400)]
     public void CalculateFeeTax_Execute_ReturnsResult(

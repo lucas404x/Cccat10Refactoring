@@ -7,17 +7,10 @@ using Cccat10RefactoringDomain.Entities;
 
 namespace Cccat10RefactoringTests;
 
-public class CheckoutTests
+public class CheckoutTests : SharedState
 {
-    // https://www.geradorcpf.com/
-    private readonly CPF _validCPF = new("68205913226");
-    private readonly CPF _invalidCPF = new("68005913226");
-
     private Mock<IOrderRepository> _orderRepository = null!;
     private Checkout _checkout = null!;
-
-    private readonly Coupon _validCoupon = new("VALE20", 10, DateTime.UtcNow.AddDays(10));
-    private readonly Coupon _invalidCoupon = new("VALE20", 10, DateTime.UtcNow);
 
     [SetUp]
     public void Setup()
@@ -34,8 +27,8 @@ public class CheckoutTests
             Product = new Product("", 18.25M, 100, 30, 10, 3),
             Quantity = 5,
         };
-        var order = new Order(_invalidCPF, null, null, null, new List<OrderItem> { item1 });
-        _orderRepository.Setup(x => x.GetOrderAsync(order.Id).Result).Returns(order);
+        var order = new Order(invalidCPF, null, null, null, new List<OrderItem> { item1 });
+        _orderRepository.Setup(x => x.GetOrderAsync(order.Id)).ReturnsAsync(order);
         Assert.ThrowsAsync<ArgumentException>(() => _checkout.Execute(order.Id));
     }
 
@@ -52,8 +45,8 @@ public class CheckoutTests
             Product = new Product("", 10.60M, 20, 15, 10, 1),
             Quantity = 2,
         };
-        var order = new Order(_validCPF, null, null, null, new List<OrderItem>() { item1, item2 });
-        _orderRepository.Setup(x => x.GetOrderAsync(order.Id).Result).Returns(order);
+        var order = new Order(validCPF, null, null, null, new List<OrderItem>() { item1, item2 });
+        _orderRepository.Setup(x => x.GetOrderAsync(order.Id)).ReturnsAsync(order);
 
         var actual = await _checkout.Execute(order.Id);
 
@@ -77,8 +70,8 @@ public class CheckoutTests
             Product = new Product("", 10.60M, 20, 15, 10, 1),
             Quantity = 2,
         };
-        var order = new Order(_validCPF, _validCoupon, "ABC", "DEFG", new List<OrderItem>() { item1, item2 });
-        _orderRepository.Setup(x => x.GetOrderAsync(order.Id).Result).Returns(order);
+        var order = new Order(validCPF, validCoupon, "ABC", "DEFG", new List<OrderItem>() { item1, item2 });
+        _orderRepository.Setup(x => x.GetOrderAsync(order.Id)).ReturnsAsync(order);
 
         var actual = await _checkout.Execute(order.Id);
 
@@ -98,8 +91,8 @@ public class CheckoutTests
             Product = new Product("", 18.25M, 100, 30, 10, 3),
             Quantity = 5,
         };
-        var order = new Order(_validCPF, _invalidCoupon, "ABC", "DEFG", new List<OrderItem>() { item1  });
-        _orderRepository.Setup(x => x.GetOrderAsync(order.Id).Result).Returns(order);
+        var order = new Order(validCPF, invalidCoupon, "ABC", "DEFG", new List<OrderItem> { item1  });
+        _orderRepository.Setup(x => x.GetOrderAsync(order.Id)).ReturnsAsync(order);
 
         Assert.ThrowsAsync<InvalidOperationException>(() => _checkout.Execute(order.Id));
     }

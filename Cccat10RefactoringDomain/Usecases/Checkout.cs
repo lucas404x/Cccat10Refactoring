@@ -34,7 +34,7 @@ public class Checkout
         };
         if (order.Coupon != null)
         {
-            if (order.Coupon.IsValid())
+            if (!order.Coupon.IsValid())
             {
                 throw new InvalidOperationException("The requested coupon is not valid.");
             }

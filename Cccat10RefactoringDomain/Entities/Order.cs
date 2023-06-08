@@ -16,6 +16,16 @@ public class Order : BaseEntity
 
     public Order() { }
 
+    public Order(Guid id, CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
+    {
+        Id = id;
+        Coupon = coupon;
+        CPF = cpf;
+        From = from;
+        To = to;
+        _items = items;
+    }
+
     public Order(CPF cpf, Coupon? coupon, string? from, string? to, List<OrderItem> items)
     {
         Coupon = coupon;

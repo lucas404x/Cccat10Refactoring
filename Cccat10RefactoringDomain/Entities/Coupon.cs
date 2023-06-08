@@ -22,5 +22,5 @@ public class Coupon : BaseEntity
 
     public decimal ApplyDiscountTo(decimal value) => value - (value * (PercentDiscount / 100));
 
-    public bool IsValid() => ExpiredDate < DateTime.UtcNow;
+    public bool IsValid() => DateTime.UtcNow.Date <= ExpiredDate.Date;
 }
